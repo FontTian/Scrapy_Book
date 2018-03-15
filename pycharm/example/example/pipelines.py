@@ -26,6 +26,8 @@ class PriceConverterPipeline(object):
 
 from scrapy.exceptions import DropItem
 
+
+# 设置过滤器,筛选其他重复样本
 class DuplicatesPipeline(object):
 
     def __init__(self):

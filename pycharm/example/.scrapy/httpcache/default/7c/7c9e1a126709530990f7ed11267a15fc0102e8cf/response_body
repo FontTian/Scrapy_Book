@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /css/
+Disallow: /images/
+Disallow: /content/
+Disallow: /ui/
+Disallow: /js/
+
+Sitemap: http://blog.csdn.net/s/sitemap/pcsitemapindex.xml

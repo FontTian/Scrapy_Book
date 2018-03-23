@@ -30,7 +30,7 @@ class MongoDBPipline:
         self.insert_db(item)
         return item
 
-    def inser_db(self,item):
+    def insert_db(self,item):
         if isinstance(item,Item):
             item = dict(item)
 

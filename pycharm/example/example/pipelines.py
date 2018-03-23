@@ -43,3 +43,4 @@ class DuplicatesPipeline(object):
         self.book_set.add(title)
 
         return item
+

@@ -29,6 +29,27 @@ class StarRatingPipeline(object):
 
         return item
 
+from scrapy.exceptions import DropItem
+
+# 设置过滤器,筛选其他重复样本
+class DuplicatesPipeline(object):
+
+    def __init__(self):
+        self.book_set = set()
+
+    def process_item(self,item,spider):
+
+        title = item['title']
+
+        if title in self.book_set:
+            raise DropItem("Duplicates book found:%s"%item)
+
+        self.book_set.add(title)
+
+        return item
+
+
+
 # use mongodb
 
 from pymongo import MongoClient
@@ -38,8 +59,8 @@ from scrapy import Item
 class MongoDBPipline:
 
     def open_spider(self, spider):
-        db_url = spider.settings.get('MONGODBURL', 'mongodb://localhost:27017')
-        db_name = spider.settings.get('MONGODB_DB_NAME', 'scrapy_default')
+        db_url = spider.settings.get('MONGODB_URL', 'mongodb://localhost:27017')
+        db_name = spider.settings.get('MONGODB_DB_NAME', 'scrapy_toscrape_book')
 
         self.db_client = MongoClient('mongodb://localhost:27017')
         self.db = self.db_client[db_name]
@@ -55,4 +76,4 @@ class MongoDBPipline:
         if isinstance(item, Item):
             item = dict(item)
 
-        self.db.books.insert_onr(item)
+        self.db.books.insert_one(item)

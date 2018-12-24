@@ -36,6 +36,14 @@ class BooksSpider(scrapy.Spider):
             "//div[@id='product_description']/following-sibling::p/text()"
         ).extract_first()
         bookitem['price'] = response.css('p.price_color ::text').extract_first()
+        bookitem['star_rating'] = response.css('div.product_main p.star-rating::attr(class)').re_first('star-rating ([A-Za-z]+)')
+
+        # 注意此处的性能问题,先创建CSS的selector对象再解析xpath的速度要远慢于额外创建一个selector对象
+        table = response.css('table.table.table-striped')
+        bookitem['upc'] = table.xpath('(.//tr)[1]/td/text()').extract_first()
+        bookitem['stock'] = table.xpath('(.//tr)[last()-1]/td/text()').re_first('\((\d+) available\)')
+        bookitem['review_num'] = table.xpath('(.//tr)[last()]/td/text()').extract_first()
+
         yield bookitem
 
 

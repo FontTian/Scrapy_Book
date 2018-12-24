@@ -14,6 +14,19 @@ BOT_NAME = 'usedatabase'
 SPIDER_MODULES = ['usedatabase.spiders']
 NEWSPIDER_MODULE = 'usedatabase.spiders'
 
+# Mongodb 设置
+MONGODB_URL = 'mongodb://localhost:27017'
+MONGODB_DB_NAME = 'scrapy_toscrape_book'
+
+# Exporter
+# 指定导出数据的字段,并指定次序(默认导出全部,顺序随机)
+FEED_EXPORT_FIELDS = ['title','category','price','star_rating','upc','stock','review_num','description',]
+
+# Configure item pipelines
+# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+   'usedatabase.pipelines.MongoDBPipline': 400,
+}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'usedatabase (+http://www.yourdomain.com)'
